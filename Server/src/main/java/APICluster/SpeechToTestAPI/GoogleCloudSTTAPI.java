@@ -1,0 +1,116 @@
+package APICluster.SpeechToTestAPI;
+
+import QueueManagers.SyncProcessQueueObject;
+import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.speech.v1.*;
+import com.google.protobuf.ByteString;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class GoogleCloudSTTAPI {
+    int samplingRate = 20100;
+    String credential_file_route;
+
+    public String streamRecognize(byte[] audioData) throws Exception {
+        System.out.println("Came in");
+        byte[] wavData = createWavHeader(audioData, samplingRate, 1, 16);
+
+        try (FileOutputStream out = new FileOutputStream("/Users/junghoonyeon/Desktop/output.wav")) {
+            out.write(wavData);
+            System.out.println("wav file was stored");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(credential_file_route));
+        SpeechSettings settings = SpeechSettings.newBuilder()
+                .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+                .build();
+
+
+        try (SpeechClient speechClient = SpeechClient.create(settings)) {
+            RecognitionConfig config = RecognitionConfig.newBuilder()
+                    .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
+                    .setLanguageCode("en-US") //en-US // ko-KR
+                    .setSampleRateHertz(samplingRate)
+                    .build();
+            System.out.println("Here 6");
+            RecognitionAudio audio = RecognitionAudio.newBuilder()
+                    .setContent(ByteString.copyFrom(wavData))
+                    .build();
+
+            RecognizeResponse response = speechClient.recognize(config, audio);
+
+            StringBuilder transcript = new StringBuilder();
+            for (SpeechRecognitionResult result : response.getResultsList()) {
+                SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
+                transcript.append(alternative.getTranscript());
+                System.out.println("Transcript: " + alternative.getTranscript());
+            }
+            return transcript.toString();
+        } catch (Exception e) {
+            System.out.println("Error processing audio data: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void setCredential_file_route(String credential_file_route) {
+        this.credential_file_route = credential_file_route;
+    }
+    public static byte[] createWavHeader(byte[] audioData, int sampleRate, int numChannels, int bitsPerSample) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+
+            // RIFF header
+            writeString(baos, "RIFF"); // ChunkID
+            writeInt(baos, 36 + audioData.length); // ChunkSize
+            writeString(baos, "WAVE"); // Format
+
+            // fmt subchunk
+            writeString(baos, "fmt "); // Subchunk1ID
+            writeInt(baos, 16); // Subchunk1Size
+            writeShort(baos, (short) 1); // AudioFormat (1 for PCM)
+            writeShort(baos, (short) numChannels); // NumChannels
+            writeInt(baos, sampleRate); // SampleRate
+            writeInt(baos, sampleRate * numChannels * bitsPerSample / 8); // ByteRate
+            writeShort(baos, (short) (numChannels * bitsPerSample / 8)); // BlockAlign
+            writeShort(baos, (short) bitsPerSample); // BitsPerSample
+
+            // data subchunk
+            writeString(baos, "data"); // Subchunk2ID
+            writeInt(baos, audioData.length); // Subchunk2Size
+            baos.write(audioData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return baos.toByteArray();
+    }
+
+    private static void writeInt(ByteArrayOutputStream baos, int value) throws IOException {
+        baos.write((value >> 0) & 0xFF);
+        baos.write((value >> 8) & 0xFF);
+        baos.write((value >> 16) & 0xFF);
+        baos.write((value >> 24) & 0xFF);
+    }
+
+    private static void writeShort(ByteArrayOutputStream baos, short value) throws IOException {
+        baos.write((value >> 0) & 0xFF);
+        baos.write((value >> 8) & 0xFF);
+    }
+
+    private static void writeString(ByteArrayOutputStream baos, String value) throws IOException {
+        for (char c : value.toCharArray()) {
+            baos.write((byte) (c & 0xFF));
+        }
+    }
+}
+
+
+
+
