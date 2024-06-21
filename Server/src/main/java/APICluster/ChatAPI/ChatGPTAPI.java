@@ -25,11 +25,12 @@ public class ChatGPTAPI {
         this.chatGPTQueue = chatGPTQueue;
         this.chatMemories = new ChatMemories(uri, database, collection);
     }
+
     String API_KEY;
     int flag = 0;
     public HttpRequest makeRequest(String content) {
-//        String API_KEY = "sk-proj-qyROOG8cfwj75L3YjNBwT3BlbkFJBmvq8nvNSuvySQwoCwWK";
         String API_URL = "https://api.openai.com/v1/completions";
+
         try {
             URL url = new URL(API_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

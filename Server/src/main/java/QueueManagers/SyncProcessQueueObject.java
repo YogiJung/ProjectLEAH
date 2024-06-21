@@ -29,8 +29,7 @@ public class SyncProcessQueueObject<T> {
             concurrentQueue.offer(data);
         } else {
             BackPressure.backPressureFlag = 1;
-            System.out.println("Concurrent Queue is full!")
-            ;
+            System.out.println("Concurrent Queue is full!");
         }
 
         if (BackPressure.backPressureFlag == 2 && name.equals("InitialQueue")) {

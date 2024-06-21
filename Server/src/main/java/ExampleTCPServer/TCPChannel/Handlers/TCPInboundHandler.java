@@ -30,11 +30,9 @@ public class TCPInboundHandler extends ChannelInboundHandlerAdapter {
     }
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (!((ByteBuf) msg).isReadable()) {
-            System.out.println("msg is not readable in tcp inbound Handler");
+            System.err.println("msg is not readable in tcp inbound Handler");
             return;
         }
-
-            System.out.println("msg in TCP INBOUDN HANDLER" + ((ByteBuf)msg).toString(StandardCharsets.UTF_8));
 
             ClientRequestFormat clientRequest = byteBufToClientRequest((ByteBuf) msg);
             if (clientRequest.getAPI_Name().equals("GoogleSTT") && BackPressure.backPressureFlag == 1) {

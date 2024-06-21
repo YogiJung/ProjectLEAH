@@ -17,15 +17,7 @@ public class GoogleCloudSTTAPI {
     String credential_file_route;
 
     public String streamRecognize(byte[] audioData) throws Exception {
-        System.out.println("Came in");
         byte[] wavData = createWavHeader(audioData, samplingRate, 1, 16);
-
-        try (FileOutputStream out = new FileOutputStream("/Users/junghoonyeon/Desktop/output.wav")) {
-            out.write(wavData);
-            System.out.println("wav file was stored");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
 
 
         GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(credential_file_route));
@@ -40,7 +32,6 @@ public class GoogleCloudSTTAPI {
                     .setLanguageCode("en-US") //en-US // ko-KR
                     .setSampleRateHertz(samplingRate)
                     .build();
-            System.out.println("Here 6");
             RecognitionAudio audio = RecognitionAudio.newBuilder()
                     .setContent(ByteString.copyFrom(wavData))
                     .build();
@@ -51,7 +42,6 @@ public class GoogleCloudSTTAPI {
             for (SpeechRecognitionResult result : response.getResultsList()) {
                 SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
                 transcript.append(alternative.getTranscript());
-                System.out.println("Transcript: " + alternative.getTranscript());
             }
             return transcript.toString();
         } catch (Exception e) {

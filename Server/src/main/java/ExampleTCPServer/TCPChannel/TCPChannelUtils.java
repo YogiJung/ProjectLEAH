@@ -44,7 +44,6 @@ public class TCPChannelUtils {
 
             jsonString = removePaddingInBase64(jsonString);
 
-            System.out.println("jsonString: " + jsonString);
             JsonObject json;
             try {
                 json = JsonParser.parseString(jsonString).getAsJsonObject();
@@ -62,7 +61,6 @@ public class TCPChannelUtils {
                 outputStream.write(dataBytes);
             } catch (IllegalArgumentException | IOException e) {
                 System.out.println("Error decoding Base64: " + e.getMessage());
-                continue;
             }
         }
 

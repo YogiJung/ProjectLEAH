@@ -50,7 +50,6 @@ public class EntryPointInboundHandler extends ChannelInboundHandlerAdapter {
         try {
             String endpoint = request.getHeader().get("endpoint").getAsString();
             if (endpoint.equals("setting")) {
-                System.out.println("Setting ==================================================");
 
                 sortAPIList = utils.settingEntryPoint(request, clientSetUp, settingFlag);
                 settingFlag = 1;
@@ -58,7 +57,6 @@ public class EntryPointInboundHandler extends ChannelInboundHandlerAdapter {
                 utils.queueSet(sortAPIList);
 
             } else if (endpoint.equals("communicate")) {
-                System.out.println("Communicate ==================================================");
                 initialQueue.enQueue((ByteBuf) msg, ctx);
 
                 if (sortAPIList != null) {

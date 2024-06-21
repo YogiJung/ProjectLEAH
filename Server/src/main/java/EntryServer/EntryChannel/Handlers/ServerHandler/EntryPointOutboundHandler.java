@@ -5,7 +5,6 @@ import io.netty.channel.*;
 public class EntryPointOutboundHandler extends ChannelOutboundHandlerAdapter {
 
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        System.out.println("Server Outbound ============================================");
         ctx.write(msg, promise);
     }
 

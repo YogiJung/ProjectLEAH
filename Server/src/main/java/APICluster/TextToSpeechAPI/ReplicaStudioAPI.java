@@ -21,8 +21,8 @@ public class ReplicaStudioAPI {
     String VOICES_URL = "https://api.replicastudios.com/v2/voices";
     String Access_Token = "";
     String API_AUTH_URL = "https://api.replicastudios.com/v2/auth";
-    String clientId = "5d192c8f-1b51-4514-92ea-369df743c8cb";
-    String clientPassword = "ffc66afa-5f25-43fb-9f80-bf650e67c59a";
+    String clientId = "client ID";
+    String clientPassword = "client Password";
     String speakerId = "934f1043-402c-4167-ba18-9a7ee0f1a178";
 
     //"37b607b0-aa6a-4421-8026-480c0138a61d";
@@ -33,6 +33,7 @@ public class ReplicaStudioAPI {
     //934f1043-402c-4167-ba18-9a7ee0f1a178 // pink Dragon
     //0be14b8f-fc12-48f1-8be7-cb52845789ad // pink Dragon 2
     //202e864f-4107-44f0-a7f1-de6f58f689f3 // pink Dragon jovial
+
     SyncProcessQueueObject<byte[]> replicaStudioQueue;
     public ReplicaStudioAPI(SyncProcessQueueObject<byte[]> replicaStudioQueue) {
         this.replicaStudioQueue = replicaStudioQueue;

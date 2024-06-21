@@ -17,7 +17,6 @@ public class TCPClientInboundHandler extends ChannelInboundHandlerAdapter {
 
 
         ClientRequestFormat clientRequestFormat = byteBufToClientRequest((ByteBuf) msg);
-        System.out.println("client inbound handler =====================");
         String endpoint = clientRequestFormat.getHeader().get("endpoint").getAsString();
         if (endpoint.equals("setting")) {
             if (lw != null && lw.getLatch().getCount() != 0) {
