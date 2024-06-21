@@ -30,7 +30,6 @@ public class ChatGPTAPI {
     int flag = 0;
     public HttpRequest makeRequest(String content) {
         String API_URL = "https://api.openai.com/v1/completions";
-
         try {
             URL url = new URL(API_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
