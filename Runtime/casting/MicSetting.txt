@@ -1,0 +1,14 @@
+SamplingRateComputation Algorithm
+sampling rate = x
+bit rate = y
+average loop time = t(s) ==> tm(ms) / 1000 ( t < 1 )
+buffer_len = L ==> In this case "length sec"
+
+Algorithm ==> (y / 8) * x = (L * (y / 8)) / t
+
+==> x = (8 / y) * (L * y) / (8 * t) ==> L / t
+
+x = L / t
+
+t is smaller ==> underRun
+otherwise, t is bigger ==> overRun
