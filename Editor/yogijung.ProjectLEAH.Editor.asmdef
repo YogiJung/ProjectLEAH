@@ -1,6 +1,6 @@
 {
     "name": "EditorLeah",
-    "rootNamespace": "Leah",
+    "rootNamespace": "ProjectLeah",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
