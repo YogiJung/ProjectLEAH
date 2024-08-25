@@ -1,6 +1,6 @@
 {
     "name": "RuntimeLeah",
-    "rootNamespace": "Leah",
+    "rootNamespace": "ProjectLeah",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
