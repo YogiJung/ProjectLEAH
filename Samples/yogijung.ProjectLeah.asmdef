@@ -1,7 +1,7 @@
 {
-    "name": "yogijung.ProjectLeah",
+    "name": "SampleLeah",
     "rootNamespace": "ProjectLeah",
-    "references": [],
+    "references": ["RuntimeLeah"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
